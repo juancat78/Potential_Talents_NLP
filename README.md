@@ -79,5 +79,3 @@ The job title matching task was approached by comparing the performance of the f
     - Open `notebook.ipynb` in Jupyter or Google Colab to view and run the code.
 
 ---
-
-Este **README** está actualizado para reflejar los resultados y comparaciones correctas entre los diferentes métodos de **embedding**, así como las observaciones clave de los modelos evaluados. También he incluido la nota de confidencialidad sobre el archivo `.csv`.
