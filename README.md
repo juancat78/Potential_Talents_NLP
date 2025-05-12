@@ -2,7 +2,11 @@
 
 ## Project Overview
 
-This project focuses on applying Natural Language Processing (NLP) techniques to match job titles in the recruitment process. The main objective is to evaluate various text embedding models and their performance in ranking job titles based on their semantic similarity to a given query. The models tested include **Word2Vec**, **GloVe**, **FastText**, and **SBERT**, which are commonly used in NLP for tasks such as text similarity, recommendation, and search.
+This project focuses on applying Natural Language Processing (NLP) techniques to match job titles in the recruitment process. The main objective is to evaluate various text embedding models and their performance in ranking job titles based on their semantic similarity to a given query. The models tested include Word2Vec, GloVe, FastText, and SBERT, which are commonly used in NLP for tasks such as text similarity, recommendation, and search.
+
+For each algorithm, a re-ranking strategy was implemented that leverages a set of “star candidates” — manually or semi-automatically selected job titles considered highly relevant. The final ranking score for each candidate combines two components: 1) Similarity to the original query (e.g., "human resources manager") and 2) Weighted similarity to the star candidates.
+
+This approach refines the ranking by giving more weight to titles aligned with both the user query and the previously identified ideal matches. After re-ranking, a filtering step was applied based on a defined similarity threshold (cut-off point) to exclude titles below the relevance standard.
 
 ## Key Techniques
 
@@ -13,10 +17,53 @@ This project focuses on applying Natural Language Processing (NLP) techniques to
 
 ## Methodology
 
-The job title matching task was approached by comparing the performance of the four embedding models in terms of their ability to rank job titles based on their relevance to a given query, **"human resources manager"**. The models were evaluated using two primary metrics:
+The job title matching task was approached through a multi-step process involving data preprocessing, embedding generation, similarity computation, re-ranking, and evaluation. The primary goal was to assess the performance of various embedding models in ranking job titles based on their semantic similarity to a given query, such as "human resources manager".
 
-- **Precision@10**: The fraction of relevant job titles in the top 10 results.
-- **nDCG@10 (Normalized Discounted Cumulative Gain)**: A ranking metric that accounts for the position of relevant results, where higher values indicate better-ranked relevance.
+1. Data Preprocessing
+To ensure consistency and improve the quality of the embeddings, the following preprocessing steps were applied to all job titles and queries:
+
+Lowercasing: Converted all text to lowercase to maintain uniformity.
+
+Punctuation Removal: Eliminated punctuation marks to focus on meaningful words.
+
+Stopword Removal: Removed common stopwords that do not contribute to semantic meaning.
+
+Lemmatization: Reduced words to their base or dictionary form to normalize variations.
+
+These steps help in reducing noise and improving the semantic representation of the text.
+
+2. Embedding Generation
+Four embedding models were utilized to transform job titles and queries into vector representations:
+
+Word2Vec: Utilized the Skip-gram model to generate word embeddings by predicting surrounding words in a context window. For multi-word job titles, embeddings were obtained by averaging the vectors of individual words.
+
+GloVe: Generated word embeddings based on global word co-occurrence statistics from a large corpus. Similar to Word2Vec, multi-word titles were represented by averaging their constituent word vectors.
+
+FastText: Extended Word2Vec by incorporating subword information, allowing it to handle rare and misspelled words effectively. Embeddings for job titles were computed by averaging the vectors of words and their subword components.
+
+SBERT (Sentence-BERT): Produced sentence-level embeddings by fine-tuning BERT using a siamese network architecture. This approach captures the semantic meaning of entire sentences or phrases, making it suitable for job titles.
+
+3. Similarity Computation
+To measure the similarity between the query and each job title, cosine similarity was employed across all embedding models. This metric calculates the cosine of the angle between two vectors, providing a measure of their directional alignment and, consequently, their semantic similarity.
+
+4. Re-ranking with Star Candidates
+To enhance the relevance of the top-ranked job titles, a re-ranking strategy was implemented using a set of "star candidates"—job titles identified as highly relevant to the query. The re-ranking process involved:
+
+Similarity Calculation: Computed the cosine similarity between each job title and the set of star candidates.
+
+Weighted Scoring: Combined the similarity scores with the original query similarity, applying a weighting scheme to balance the influence of the query and the star candidates.
+
+Final Ranking: Sorted the job titles based on the combined scores to prioritize those aligning closely with both the query and the star candidates.
+
+5. Filtering with Cut-off Threshold
+To ensure the quality of the recommended job titles, a filtering step was applied using a predefined similarity cut-off threshold. Job titles with combined similarity scores below this threshold were excluded from the final results, ensuring that only the most relevant titles were presented.
+
+6. Evaluation Metrics
+The performance of each embedding model was evaluated using the following metrics:
+
+Precision@10: The proportion of relevant job titles among the top 10 results.
+
+nDCG@10 (Normalized Discounted Cumulative Gain): A metric that considers the position of relevant results in the ranking, assigning higher importance to those appearing earlier.
 
 ### Embedding Models Evaluation
 
@@ -57,10 +104,12 @@ The job title matching task was approached by comparing the performance of the f
 - **FastText** is particularly useful for datasets with rare or misspelled job titles due to its subword-level modeling, though direct evaluation metrics were not available.
 
 ## Main Files
-- **`notebook.ipynb`**: Jupyter Notebook containing the code and methodology used for this project.
-- **`requirements.txt`**: The dependencies required to run the notebook.
-  
-(Note: The original dataset in `.csv` format is not included due to confidentiality agreements.)
+
+#Potential_Talents.ipynb: Jupyter Notebook containing the full implementation of the project, including data preprocessing, embedding model comparisons, similarity computations, re-ranking logic with "star candidates", and evaluation using metrics such as Precision@10 and nDCG@10.
+
+README.txt: This document provides a comprehensive overview of the project, including its objectives, methodologies (embedding models used, similarity comparison via cosine distance, re-ranking approach, and filtering), key results, and instructions for setup and execution.
+
+Note: The original dataset used in this project is not included in the repository due to confidentiality agreements.
 
 ## Installation
 
