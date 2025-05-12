@@ -8,13 +8,6 @@ For each algorithm, a re-ranking strategy was implemented that leverages a set o
 
 This approach refines the ranking by giving more weight to titles aligned with both the user query and the previously identified ideal matches. After re-ranking, a filtering step was applied based on a defined similarity threshold (cut-off point) to exclude titles below the relevance standard.
 
-## Key Techniques
-
-1. **Word2Vec**: A shallow neural network model used to learn word associations from a large corpus of text, capturing semantic meaning by considering the surrounding context of words.
-2. **GloVe**: A model that generates word embeddings based on matrix factorization techniques, focusing on capturing global co-occurrence statistics from large corpora.
-3. **FastText**: Similar to Word2Vec but with the added ability to handle subword information, which allows it to better capture rare and misspelled words.
-4. **SBERT (Sentence-BERT)**: A modification of the BERT architecture, which produces sentence-level embeddings and is particularly effective for tasks that require understanding the meaning of entire sentences or phrases.
-
 ## Methodology
 
 The job title matching task was approached through a multi-step process involving data preprocessing, embedding generation, similarity computation, re-ranking, and evaluation. The primary goal was to assess the performance of various embedding models in ranking job titles based on their semantic similarity to a given query, such as "human resources manager".
