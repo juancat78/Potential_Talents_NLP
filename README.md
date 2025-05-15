@@ -90,10 +90,12 @@ nDCG@10 (Normalized Discounted Cumulative Gain): A metric that considers the pos
 - **FastText**: Although not evaluated with metrics, the correlation between FastText and Word2Vec was very high (0.884), indicating similar ranking behavior.
 - **SBERT**: Achieved a perfect nDCG@10 but with low Precision@10, highlighting its strengths in semantic understanding but weaknesses in strict relevance alignment.
 
-## Conclusion
+## Conclusions
 
 - **GloVe** and **Word2Vec** are effective for ranking job titles in terms of both relevance and precision, with **GloVe** offering a slightly better ranking performance.
-- **SBERT**, while great for general semantic understanding, requires fine-tuning or domain-specific adjustments to improve precision for specific tasks like job title matching.
+  
+- **SBERT**, In this project, the pre-trained 'all-MiniLM-L6-v2' model from SBERT was used, which is optimized for general-purpose semantic similarity tasks in English. However, results suggest that this model may not have been trained on sufficiently representative examples of certain domain-specific or uncommon terms found in the dataset, such as non-standardized or contextually ambiguous job titles (e.g., titles including qualifiers like "aspiring"). This may explain its lower performance in terms of precision, despite achieving a high nDCG@10 score. Therefore, it would be advisable to explore alternative checkpoints that are better suited to the recruitment domain or to fine-tune the model on a domain-specific corpus to improve its alignment with stricter relevance criteria.
+  
 - **FastText** is particularly useful for datasets with rare or misspelled job titles due to its subword-level modeling, though direct evaluation metrics were not available.
 
 ## Main Files
